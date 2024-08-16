@@ -1,5 +1,7 @@
 # JavaStudy
 
+## Attention: Currently Updating...
+
 ### Author: YoruAi
 
 **Introduction**: This is a note about reading Core Java (written by Cay S. Horstmann).
