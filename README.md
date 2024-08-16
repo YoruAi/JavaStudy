@@ -9,7 +9,6 @@ The JDK version I am using is **JDK17**, and the IDE is IDEA. This project can b
 Remember
 to check
 the option of *inheriting the project compilation output path*.
-Attention: Currently Updating...
 
 ---
 
