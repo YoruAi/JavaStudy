@@ -16,7 +16,7 @@ public class InheritanceSuper extends InheritanceABC {
         this.salary = salary;
     }
 
-    public String getDiscription() {
+    public String getDescription() {
         return "Super: " + super.getName() + getSalary();
     }
 }

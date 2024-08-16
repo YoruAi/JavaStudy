@@ -16,7 +16,7 @@ public final class InheritanceSon extends InheritanceSuper {
         return super.getSalary() + bonus;
     }
 
-    public String getDiscription() {
+    public String getDescription() {
         return "Son: " + super.getName() + getSalary();
     }
 }
