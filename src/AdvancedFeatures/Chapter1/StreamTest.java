@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -28,7 +29,7 @@ public class StreamTest {
         stringStream = Stream.generate(() -> "Echo");   // 无限流：常量值"Echo"流
         Stream.generate(Math::random);  // 无限流：随机数流
         Stream.iterate(BigInteger.ZERO, n -> n.add(BigInteger.ONE));    // 无限流：将函数不断应用于种子上
-        Stream.iterate(0, n -> n > 100, n -> n + 1);    // 有限流：含终止条件
+        Stream.iterate(0, n -> n < 100, n -> n + 1);    // 有限流：含存在条件
         // 其他方式
         stringStream = Pattern.compile("\\PL+").splitAsStream("a b c"); // 使用正则表达式得到单词流
         stringStream = new Scanner("a b c").tokens();   // 得到单词流(next)
@@ -60,7 +61,7 @@ public class StreamTest {
 
 
         // 获取流结果 - 终结操作 //
-        // 约简
+        // 简单约简
         Stream.of(arr).count();
         Optional<String> optionalString = Stream.of(arr).max(String::compareTo);    // 传入比较器
         Stream.of(arr).findFirst(); // findAny()返回任意元素
@@ -73,48 +74,93 @@ public class StreamTest {
         result = optionalString.orElseThrow(IOException::new);   // 没有值时抛出异常
         optionalString.ifPresent(System.out::println);  // 存在时执行
         optionalString.ifPresentOrElse(System.out::println, () -> System.err.println("None!"));  // 存在时执行
-        // 管道化Optional值
+        // Optional - 管道化值
         Optional<String> transform = optionalString.map(String::toLowerCase);   // 存在则通过函数产生新Optional，否则空
         transform = optionalString.filter(s -> s.length() < 3); // 若满足则不变，不满足则空
         transform = optionalString.or(() -> Stream.of(arr).findFirst());    // 空则计算另一个Optional
-        // 创建Optional值
+        // Optional - 创建
         Optional.empty();
         Optional.of("Can't be null");
         Optional.ofNullable("Can be null"); // 若为null返回空Optional
-        // Optional的flatMap()方法
+        // Optional - flatMap()方法
         Optional<Integer> value = Stream.of(arr).findFirst()
                 .flatMap(s -> Optional.of(s.length()))
                 .flatMap(i -> Optional.of(i + 1));   // 对可能的Optional值执行函数返回Optional，可继续调用形成步骤管道
-        // 将Optional转化为流
+        // Optional - 转化为流
         value.stream(); // 若无值则返回空流
         stringStream = Stream.of(arr).map(Optional::ofNullable)
                 .flatMap(Optional::stream);  // 对于一个Optional流，使用扁平化流解包Optional
         stringStream = stringStream.filter(Objects::nonNull);   // 若不是Optional流，注意对null的特判 - 方法一
         stringStream = stringStream.flatMap(Stream::ofNullable);    // 方法二
-        // 流结果收集
+        // 流结果收集 - 遍历
         Stream.of(arr).iterator();  // 使用迭代器
         Stream.of(arr).forEach(System.out::println);  // 对并行流顺序无法确定
         Stream.of(arr).forEachOrdered(System.out::println);   // 非并行实现，顺序执行
         String[] stringsResult = Stream.of(arr).toArray(String[]::new);
-        List<String> stringList = Stream.of(arr).collect(Collectors.toList());  // 产生收集器Collector并使用，收集到集合
-        TreeSet<String> stringTreeSet = Stream.of(arr).collect(Collectors.toCollection(TreeSet::new));  // 指定类型
+        // 流结果收集 - 收集器
         String joinString = Stream.of(arr)
                 .map(Objects::toString)     // 若存在非String
                 .collect(Collectors.joining(",", "pre", "suf")); // 字符串拼接收集器
-        IntSummaryStatistics summary // 对该对象使用get(Count|Max|Average|Sum);若无则返回Integer.MAX_VALUE...
-                = Stream.of(arr)
-                .collect(Collectors.summarizingInt(String::length)); // 产生总和收集器
-        Map<String, Integer> stringMap = Stream.of(arr)     // 收集到映射表(默认有相同键抛出异常，可提供第三参数)
-                .collect(Collectors.toMap(s -> s, String::length    // 或Function.identity()来返回输入值
-                        , (existValue, newValue) -> existValue));   // 解决冲突
+        List<String> stringList = Stream.of(arr).collect(Collectors.toList());  // 产生收集器Collector并使用，收集到集合
+        TreeSet<String> stringTreeSet = Stream.of(arr).collect(Collectors.toCollection(TreeSet::new));  // 指定类型
+        Map<String, Integer> stringMap = Stream.of(arr)
+                .collect(Collectors.toMap(      // 收集到映射表(默认有相同键抛出异常，可提供第三参数)
+                        s -> s,                 // 或Function.identity()来返回输入值
+                        String::length,
+                        (existValue, newValue) -> existValue));   // 解决冲突
         Map<Integer, Set<String>> setMap = Stream.of(arr)
-                .collect(Collectors.toMap(String::length  // toConcurrentMap并发映射表;toUnmodifiableMap不可修改映射表
-                        , s -> new HashSet<>(Set.of(s))
-                        , (existSet, newSet) -> {
+                .collect(Collectors.toMap(      // toConcurrentMap并发映射表;toUnmodifiableMap不可修改映射表
+                        String::length,
+                        s -> new HashSet<>(Set.of(s)),
+                        (existSet, newSet) -> {
                             existSet.addAll(newSet);
                             return existSet;
-                        }
-                        , TreeMap::new)     // 可指定Map类型
+                        },
+                        TreeMap::new)           // 可指定返回的Map类型
                 );
+        Map<Integer, List<String>> listMap = Stream.of(arr)         // 使用Function参数产生键
+                .collect(Collectors.groupingBy(String::length));    // 使用groupingByConcurrent方法处理并发流
+        Map<Boolean, List<String>> booleanListMap = Stream.of(arr)
+                .collect(Collectors.partitioningBy(s -> s.length() < 5));   // 使用partitioningBy分为真假两组
+        Map<Integer, Set<String>> integerSetMap = Stream.of(arr)
+                .collect(Collectors.groupingBy(String::length, Collectors.toSet())); // 下游收集器（对每一组元素进行收集）
+        // 流结果收集 - 其他收集器（tip:尽量只在groupingBy的下游处理器中使用，否则应处理流，都有对应流方法）
+        Collectors.counting();
+        IntSummaryStatistics summary // 对该对象使用get(Count|Max|Average|Sum);若无则返回Integer.MAX_VALUE...
+                = Stream.of(arr).collect(Collectors.summarizingInt(String::length)); // 产生统计收集器
+        Collectors.summingInt(String::length);  // 可由数字流方法替代
+        Collectors.maxBy(Comparator.comparingInt(String::length));      // 通过比较器产生(下游)元素中的最大值
+        Collectors.mapping(String::length, Collectors.toSet()); // 函数应用于收集的元素后使用下游收集器(flatMapping可处理流)
+        Collectors.filtering((String s) -> s.length() < 10, Collectors.toSet());    // 组内筛选后下游收集器收集
+        Collectors.reducing("", String::concat);    // 组内合并
+        Collectors.collectingAndThen(Collectors.toSet(), Set::size);    // (下游)收集后产生最后的值
+        // 约简操作
+        Optional<String> stringOptional = Stream.of(arr).reduce(String::concat);    // 两个元素向后应用（并行流无顺序）
+        String reduced = Stream.of(arr).reduce("", String::concat);         // 可提供幺元
+        Stream.of(arr).reduce(0, (total, s) -> total + s.length(), Integer::sum); // 返回值不同需提供结果合并函数
+        BitSet bitSet = Stream.of(1, 2).collect(BitSet::new, BitSet::set, BitSet::or); // 对于线程不安全的处理
+
+        // 其他 //
+        // 基本类型流 - 优化掉包装器
+        IntStream intStream;
+        intStream = IntStream.of(1, 2, 3);
+        intStream = Arrays.stream(new int[]{1, 2, 3}, 0, 2);
+        intStream = IntStream.range(0, 100);    // generate, iterate方法也有，rangeClosed包含上界
+        intStream = stringStream.mapToInt(String::length);  // 由对象流转化为基本类型流
+        Stream<Integer> integerStream = intStream.boxed();  // 由基本类型转化为对象流
+        int[] intArr = IntStream.range(0, 10).toArray();
+        OptionalInt optionalInt = IntStream.range(0, 10).max(); // OptionalInt使用getAsInt()方法
+        int sum = IntStream.range(0, 10).sum();             // 含有sum,average,max等方法
+        IntSummaryStatistics intSummaryStatistics = IntStream.range(0, 10).summaryStatistics();
+        intStream = "string".codePoints();      // 码点流，chars()返回代码单元流
+        intStream = new Random().ints(10, 0, 5);// 随机数流(不可分割，故涉及并行应使用SplittableRandom)
+        // 并行流
+        Stream<String> parallelStream;
+        parallelStream = strings.parallelStream();   // 从集合中获取并行流
+        parallelStream = stringStream.parallel();    // 顺序流转化为并行流
+        Stream<String> unordered = strings.parallelStream().unordered();   // 标记为无序流，提高某些方法的性能
+        Map<Integer, List<String>> integerListMap = strings.parallelStream().collect(
+                Collectors.groupingByConcurrent(String::length)
+        );  // 因合并映射表代价高昂，故使用并行化共享同一映射表（注意需要不关注顺序）
     }
 }
