@@ -21,10 +21,10 @@ public class StringAPITest {
         "hello".equalsIgnoreCase(greeting);
 
         // 遍历
-        s.length();                         // 代码单元
-        s.codePointCount(0, s.length());    // 码点
-        char ch = s.charAt(1);              // 代码单元
-        int cp = s.codePointAt(1);      // 码点
+        s.length();                             // 代码单元(char - 两字节)
+        s.codePointCount(0, s.length());        // 码点(一个或两个代码单元)
+        char ch = s.charAt(1);                  // 代码单元
+        int cp = s.codePointAt(1);        // 码点
         int index = s.offsetByCodePoints(0, 2); // 查找第n个码点的索引
         int[] cps = s.codePoints().toArray();   // 码点流
         String ss = new String(cps, 0, cps.length);
