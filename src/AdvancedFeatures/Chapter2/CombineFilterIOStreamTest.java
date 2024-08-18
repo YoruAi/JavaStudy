@@ -4,9 +4,9 @@ import java.io.*;
 
 public class CombineFilterIOStreamTest {
     // 在java.io的类都以用户工作目录user.dir开始
-    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\TestInput.dat";
-    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\TestOutput.txt";
-    
+    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.dat";
+    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestOutput.txt";
+
     public static void main(String[] args) throws IOException {
         // 组合IO流过滤器FilterInputStream
         try (var fin = new FileInputStream(InputFile);

@@ -4,8 +4,8 @@ import java.io.*;
 
 // IO流家族详情见卷二p46-46
 public class BaseIOStreamTest {
-    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\TestInput.txt";
-    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\TestOutput.txt";
+    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.txt";
+    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestOutput.txt";
 
     public static void main(String[] args) throws IOException {
         // 这四个抽象类都实现了Closeable接口，可使用try-with-resource
