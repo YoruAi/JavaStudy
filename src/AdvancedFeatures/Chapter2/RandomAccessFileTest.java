@@ -2,7 +2,7 @@ package AdvancedFeatures.Chapter2;
 
 import java.io.*;
 
-public class RandomAccessIOTest {
+public class RandomAccessFileTest {
     final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.dat";
 
     public static void main(String[] args) {

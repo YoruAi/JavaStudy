@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.zip.*;
 
-public class ZipIOTest {
+public class ZipIOStreamTest {
     final static private String zipFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestZip.zip";
 
     public static void main(String[] args) throws IOException {
