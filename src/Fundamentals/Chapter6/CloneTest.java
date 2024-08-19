@@ -5,6 +5,7 @@ import java.util.Date;
 public class CloneTest implements Cloneable {
     private Date date;
 
+    // 协变返回类型
     @Override
     public CloneTest clone() throws CloneNotSupportedException {
         CloneTest cloned = (CloneTest) super.clone();
