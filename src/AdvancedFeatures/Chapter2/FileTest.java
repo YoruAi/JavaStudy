@@ -3,12 +3,17 @@ package AdvancedFeatures.Chapter2;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 // 关于文件操作标准选项可查看卷二p91-92
 public class FileTest {
     public static void main(String[] args) throws IOException {
+        // 注意关于各种流与打开目录请使用try-with-resource以自动关闭
         Path FilePath = Paths.get("src", "AdvancedFeatures", "Chapter2", "resource", "TestInput.txt");
+
         // Files读写文件方法 //
         byte[] readAllBytes = Files.readAllBytes(FilePath);
         String readString = Files.readString(FilePath);
@@ -43,5 +48,60 @@ public class FileTest {
                 StandardCopyOption.REPLACE_EXISTING);
         Files.copy(newPath, System.out);    // 文件到输出流
         Files.deleteIfExists(DirectoryPath.resolveSibling("temp.txt")); // 删除文件
+
+
+        // 获取文件信息 //
+        Files.size(newPath);
+        Files.exists(newPath);
+        Files.isHidden(newPath);    // is(Readable|Writable|isExecutable|isRegularFile|isDirectory|isSymbolicLink)
+        BasicFileAttributes attributes = Files.readAttributes(newPath, BasicFileAttributes.class);  // 获取文件属性
+        FileTime fileTime = attributes.creationTime();  // 文件时间信息。lastAccessTime/lastModifiedTime
+
+
+        // 访问目录 //
+        Stream<Path> entries = Files.list(DirectoryPath);   // 不递归子目录
+        Files.walk(DirectoryPath, 3);   // 递归子目录，可限制深度
+        Files.find(DirectoryPath, 3, (path, attr) -> path.getFileName().toString().endsWith(".txt"));
+        DirectoryStream<Path> directoryStream = Files.newDirectoryStream(DirectoryPath);    // Iterable接口
+        // 可使用glob模式筛选文件，如*.java, **.java, ???.java, test[0-9A-F].java, *.{java,class}
+        Files.walkFileTree(DirectoryPath, new SimpleFileVisitor<>() {
+            // 默认继续访问或出错跳过，可重载
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                // 访问文件
+                System.out.println("File-" + DirectoryPath.getParent().relativize(file) + " Deleted.");
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                // 访问目录前
+                System.out.println("Into " + DirectoryPath.getParent().relativize(dir) + ":");
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                // 访问目录后
+                if (exc != null) throw exc;
+                System.out.println("Dir-" + DirectoryPath.getParent().relativize(dir) + " Deleted.");
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                // 访问失败后
+                System.err.println("ERROR when access to " + DirectoryPath.getParent().relativize(file));
+                return FileVisitResult.SKIP_SUBTREE;    // 跳过子目录或SKIP_SIBLINGS跳过剩下的兄弟文件
+            }
+        });
+
+
+        // ZIP文件系统 //
+        FileSystem fs = FileSystems.newFileSystem(
+                Paths.get("src/AdvancedFeatures/Chapter2/resource/TestZip.zip"));
+        fs.getPath("/TestInput.txt");   // 如同Paths.get。至此，即可和之前一样操作了
     }
 }
