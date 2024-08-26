@@ -9,6 +9,7 @@ import java.lang.annotation.*;
 import java.lang.reflect.*;
 import java.util.*;
 
+@AnnotationTest(includeName = false)
 public class AnnotationUseTest {
     @Override                       // 用于编译的注解：注解覆盖方法
     @Deprecated                     // 用于编译的注解：已过时标签
@@ -26,8 +27,13 @@ public class AnnotationUseTest {
         System.out.println("checking...");
     }
 
-    @AnnotationTest(severity = {1, 2})   // 若是单值注解可以省略元素名
+    @AnnotationTest   // 若是单值注解可以省略元素名
+    public String getName() {
+        return "name";
+    }
+
     public static void main(String[] args) throws ReflectiveOperationException {
+        // 可通过反射实现[运行时]注解处理
         Method m = AnnotationUseTest.class.getDeclaredMethod("check");
         Annotation[] annotations = m.getDeclaredAnnotations();
         Test annotation = m.getAnnotation(Test.class);  // 如果无则返回null
