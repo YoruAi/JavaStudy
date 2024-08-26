@@ -18,7 +18,7 @@ import java.util.Set;
 // 注解处理器：通过javac -cp ... -processor AdvancedFeatures.Chapter8.AnnotationProcessorTest ...调用
 @SupportedAnnotationTypes("AdvancedFeatures.Chapter8.AnnotationTest")   // 可分析的注解类型
 @SupportedSourceVersion(SourceVersion.RELEASE_17)                       // 支持的最新版本
-public class AnnotationProcessorTest extends AbstractProcessor {
+public class AnnotationSourceProcessorTest extends AbstractProcessor {
     // Element接口：TypeElement, VariableElement, ExecutableElement - 分别对应类、变量、函数
     // AnnotatedElement接口：反射机制中大部分都实现了该接口，对应语言模型API中AnnotatedConstruct接口
     // TypeElement可使用getEnclosedElements()获取域和方法列表，getQualifiedName()获取名字

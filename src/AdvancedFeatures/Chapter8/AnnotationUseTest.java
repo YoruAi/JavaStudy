@@ -8,6 +8,7 @@ import javax.annotation.processing.Generated;
 import java.lang.annotation.*;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.logging.*;
 
 @AnnotationTest(includeName = false)
 public class AnnotationUseTest {
@@ -27,12 +28,13 @@ public class AnnotationUseTest {
         System.out.println("checking...");
     }
 
-    @AnnotationTest   // 若是单值注解可以省略元素名
+    @AnnotationTest(logger = "Fundamentals.Chapter7.LoggerTest")   // 若是单值注解可以省略元素名
     public String getName() {
         return "name";
     }
 
     public static void main(String[] args) throws ReflectiveOperationException {
+        // AnnotationRuntimeProcessorTest
         // 可通过反射实现[运行时]注解处理
         Method m = AnnotationUseTest.class.getDeclaredMethod("check");
         Annotation[] annotations = m.getDeclaredAnnotations();
@@ -47,5 +49,14 @@ public class AnnotationUseTest {
                 .map(Annotation::annotationType)
                 .map(Class::getName)
                 .forEach(System.out::println);
+
+        // 测试字节码工程
+        Locale.setDefault(Locale.ENGLISH);
+        Logger.getLogger("Fundamentals.Chapter7.LoggerTest").setLevel(Level.FINEST);
+        var handler = new ConsoleHandler();
+        handler.setLevel(Level.FINEST);
+        Logger.getLogger("Fundamentals.Chapter7.LoggerTest").addHandler(handler);
+        var obj = new AnnotationUseTest();
+        System.out.println(obj.getName());
     }
 }

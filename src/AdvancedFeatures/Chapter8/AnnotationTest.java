@@ -20,6 +20,8 @@ public @interface AnnotationTest {
     enum Status {FINE, BUG}
 
     Status status() default Status.FINE;
+
+    String logger() default "Fundamentals.Chapter7.LoggerTest";
 }
 
 @Target({ElementType.METHOD, ElementType.TYPE})
