@@ -4,7 +4,7 @@
 
 ### Author: YoruAi
 
-**Introduction**: This is a note about reading *Core Java* (written by Cay S. Horstmann).
+**Introduction**: This is a note about reading *Core Java (11th edition)* (written by Cay S. Horstmann).
 The JDK version I am using is **JDK17**, and the IDE is IDEA. This project can be imported into **IDEA** for use.
 Remember to check the option of *inheriting the project compilation output path*.
 
