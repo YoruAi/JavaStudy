@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 public class FileTest {
     public static void main(String[] args) throws IOException {
         // 注意关于各种流与打开目录请使用try-with-resource以自动关闭
-        Path FilePath = Paths.get("src", "AdvancedFeatures", "Chapter2", "resource", "TestInput.txt");
+        Path FilePath = Paths.get("src", "AdvancedFeatures", "Chapter2", "resources", "TestInput.txt");
 
         // Files读写文件方法 //
         byte[] readAllBytes = Files.readAllBytes(FilePath);
@@ -31,7 +31,7 @@ public class FileTest {
 
 
         // 创建文件和目录(指定文件或目录属性不展示) //
-        Path DirectoryPath = Paths.get("src", "AdvancedFeatures", "Chapter2", "resource", "create");
+        Path DirectoryPath = Paths.get("src", "AdvancedFeatures", "Chapter2", "resources", "create");
         Files.createDirectory(DirectoryPath);   // 创建目录，需保证中间路径存在(createDirectories可自动创建中间路径)
         Files.createFile(DirectoryPath.resolveSibling("temp.txt"));  // 创建文件，若已有则抛出异常
         Path tempDirectoryPath = Files.createTempDirectory(DirectoryPath, null);      // 创建临时目录
@@ -101,7 +101,7 @@ public class FileTest {
 
         // ZIP文件系统 //
         FileSystem fs = FileSystems.newFileSystem(
-                Paths.get("src/AdvancedFeatures/Chapter2/resource/TestZip.zip"));
+                Paths.get("src/AdvancedFeatures/Chapter2/resources/TestZip.zip"));
         fs.getPath("/TestInput.txt");   // 如同Paths.get。至此，即可和之前一样操作了
     }
 }

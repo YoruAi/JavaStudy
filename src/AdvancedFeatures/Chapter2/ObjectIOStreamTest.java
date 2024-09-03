@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectIOStreamTest implements Externalizable, Cloneable {
-    final static private String DataFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.dat";
+    final static private String DataFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestInput.dat";
 
     private int information;
     transient private InheritanceSuper person;      // 标记为瞬态域禁止其被序列化

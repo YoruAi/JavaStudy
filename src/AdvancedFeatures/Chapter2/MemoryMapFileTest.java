@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class MemoryMapFileTest {
     public static void main(String[] args) throws IOException {
-        Path file = Paths.get("src/AdvancedFeatures/Chapter2/resource/TestInput.dat");
+        Path file = Paths.get("src/AdvancedFeatures/Chapter2/resources/TestInput.dat");
         FileChannel channel = FileChannel.open(file);
         MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, channel.size());
         // 支持随机访问

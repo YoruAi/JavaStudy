@@ -20,7 +20,7 @@ public class ScriptTest {
         if (engine != null) {
             engine.eval("let x = 1");
             engine.put("k", 2);
-            Reader reader = new FileReader("src/AdvancedFeatures/Chapter8/resource/Script.js");
+            Reader reader = new FileReader("src/AdvancedFeatures/Chapter8/resources/Script.js");
             engine.eval(reader);
             Object result = engine.eval("x");
             result = engine.get("k");

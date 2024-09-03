@@ -50,7 +50,7 @@ public class RegexTest {
         Stream<MatchResult> matchResultStream = matcher.results();
         List<String> matches = matchResultStream.map(MatchResult::group).collect(Collectors.toList());
 
-        Scanner in = new Scanner(Paths.get("src/AdvancedFeatures/Chapter2/resource/TestOutput.txt"));
+        Scanner in = new Scanner(Paths.get("src/AdvancedFeatures/Chapter2/resources/TestOutput.txt"));
         Stream<String> words = in.findAll("\\d").map(MatchResult::group);
         words.forEach(System.out::println);
 

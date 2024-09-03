@@ -6,7 +6,7 @@ public class PathTest {
     public static void main(String[] args) {
         // 路径
         Path basePath = Paths.get(System.getProperty("user.dir"));
-        Path path = Paths.get("src", "AdvancedFeatures", "Chapter2", "resource"); // 使用默认的文件系统分隔符
+        Path path = Paths.get("src", "AdvancedFeatures", "Chapter2", "resources"); // 使用默认的文件系统分隔符
         Path resPath = basePath.resolve(path);                   // 组合或解析路径
         Path siblingPath = resPath.resolveSibling("temp"); // 产生兄弟路径
         Path relativePath = siblingPath.relativize(basePath);    // 解析相对路径

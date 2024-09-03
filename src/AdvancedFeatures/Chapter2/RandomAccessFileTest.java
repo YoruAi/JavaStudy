@@ -3,7 +3,7 @@ package AdvancedFeatures.Chapter2;
 import java.io.*;
 
 public class RandomAccessFileTest {
-    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.dat";
+    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestInput.dat";
 
     public static void main(String[] args) {
         try {

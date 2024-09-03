@@ -10,10 +10,10 @@ public class ResourceTest {
     public static void main(String[] args) throws IOException {
         Class cl = ResourceTest.class;  // 通过类文件相对位置查询资源
 
-        URL aboutURL = cl.getResource("resource/about.png");    // 可接受URL
+        URL aboutURL = cl.getResource("resources/about.png");    // 可接受URL
         var icon = new ImageIcon(aboutURL);
 
-        InputStream stream = cl.getResourceAsStream("resource/about.txt");  // 其他
+        InputStream stream = cl.getResourceAsStream("resources/about.txt");  // 其他
         var about = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
     }
 }

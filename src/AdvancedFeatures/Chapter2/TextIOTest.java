@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 // 文本输入输出
 public class TextIOTest {
-    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.txt";
-    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestOutput.txt";
+    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestInput.txt";
+    final static private String OutputFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestOutput.txt";
 
     public static void main(String[] args) throws IOException {
         var reader = new InputStreamReader(System.in, StandardCharsets.UTF_8);  // 只能读入字符，功能少

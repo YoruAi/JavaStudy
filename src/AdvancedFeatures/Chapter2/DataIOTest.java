@@ -4,7 +4,7 @@ import java.io.*;
 
 // 二进制输入输出
 public class DataIOTest {
-    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestInput.dat";
+    final static private String InputFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestInput.dat";
 
     public static void main(String[] args) throws IOException {
         // DataInput、DataInput接口

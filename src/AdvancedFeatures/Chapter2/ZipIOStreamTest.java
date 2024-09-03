@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.zip.*;
 
 public class ZipIOStreamTest {
-    final static private String zipFile = "src\\AdvancedFeatures\\Chapter2\\resource\\TestZip.zip";
+    final static private String zipFile = "src\\AdvancedFeatures\\Chapter2\\resources\\TestZip.zip";
 
     public static void main(String[] args) throws IOException {
         // IN
