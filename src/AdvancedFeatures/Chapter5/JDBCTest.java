@@ -14,6 +14,7 @@ public class JDBCTest {
         DriverManager.setLogWriter(new PrintWriter(System.out));    // 获得跟踪信息到控制台
 
         try {
+            // 连接数据库（企业开发中更常用DataSource）
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db01",
                     "root", "111111");  // 最好使用try-with-resource
 
