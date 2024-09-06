@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document version="4">
+    <parent>
+        <son>520</son>
+        <son>1314</son>
+    </parent>
+    <text>love you!</text>
+    <number>3.14</number>
+    <a href="https://www.baidu.com/s?wd=love">URL</a>
+    <!--LOVE-->
+    <node/>
+</document>
