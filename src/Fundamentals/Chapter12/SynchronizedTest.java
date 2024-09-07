@@ -65,7 +65,8 @@ public class SynchronizedTest {
             // 进入一个同步块，获取该对象的锁
         }
         // volatile字段声明：表明该字段可能被其他线程修改（但不提供原子性，如done = !done;无法保证）
-        
+        // 使用AtomicInteger等类 - 原子值：对这些共享变量操作时使用提供的方法可保证原子性
+
         // 限制与建议：见卷一p577
     }
 }
