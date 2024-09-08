@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class SynchronizedTest {
+public class SynchronousTest {
     public static void main(String[] args) {
         // 同步 //
         // 竞态条件
