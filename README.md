@@ -1,7 +1,5 @@
 # JavaStudy
 
-## Attention: Currently Updating...
-
 ### Author: YoruAi
 
 **Introduction**: This is a note about reading *Core Java (11th edition)* (written by Cay S. Horstmann).
